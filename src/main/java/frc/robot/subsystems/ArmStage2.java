@@ -38,6 +38,8 @@ public class ArmStage2 extends SubsystemBase {
 	 private double setPoint;
 	 private double backUp;
 	 private double feedforward = 0.07;
+	 private double moveSetpoint;
+	 private double currentSetPoint;
 
   /** Creates a new ArmStage1. */
   public ArmStage2() {
@@ -134,6 +136,16 @@ public class ArmStage2 extends SubsystemBase {
 	double targetPos = setPoint * 2048;
 	  
 	this.MoveToPosition(targetPos);
+  }
+
+  public void ArmStageUp(){
+    moveSetpoint = currentSetPoint + 1024;
+	this.MoveToPosition(moveSetpoint);
+  }
+
+  public void ArmStageDown(){
+	moveSetpoint = currentSetPoint - 1024;
+	this.MoveToPosition(moveSetpoint);
   }
 
   private void MoveToPosition(double targetPos) {

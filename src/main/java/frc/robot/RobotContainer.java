@@ -26,6 +26,8 @@ import frc.robot.commands.MoveToMidScore;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.SetBrakeMode;
 import frc.robot.commands.SetCoastMode;
+import frc.robot.commands.Stage2MoveDown;
+import frc.robot.commands.Stage2MoveUp;
 import frc.robot.subsystems.ArmStage1;
 import frc.robot.subsystems.ArmStage2;
 import frc.robot.subsystems.CandleControl;
@@ -33,10 +35,10 @@ import frc.robot.subsystems.DriveTrain;
 //import oi.limelightvision.limelight.frc.LimeLight;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gripper;
+import oi.limelightvision.limelight.frc.LimeLight;
 
 public class RobotContainer {
  
-
   private final SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
   //Subsystems that will be used in the rest of the file
@@ -58,6 +60,8 @@ public class RobotContainer {
   private final MoveToLoadingStation m_MoveToLoadingStation = new MoveToLoadingStation(m_Elevator, m_ArmStage2, m_ArmStage1);
   private final ElevatorUp m_ElevatorUp = new ElevatorUp(m_Elevator);
   private final ElevatorDown m_ElevatorDown = new ElevatorDown(m_Elevator);
+  private final Stage2MoveUp m_Stage2MoveUp = new Stage2MoveUp(m_ArmStage2);
+  private final Stage2MoveDown m_Stage2MoveDown = new Stage2MoveDown(m_ArmStage2);
   //Commands -- Gripper controls / pneumatics
   private final CloseGripper m_CloseGripper = new CloseGripper(m_Gripper);
   private final OpenGripper m_OpenGripper = new OpenGripper(m_Gripper);
@@ -68,7 +72,6 @@ public class RobotContainer {
   private final SetBrakeMode m_SetBrakes = new SetBrakeMode();
   //Set Coast drive train
   private final SetCoastMode m_CoastMode = new SetCoastMode();
-
   //Autonomous
   private final Auto1 m_auto1 = new Auto1(m_Elevator, m_ArmStage1, m_ArmStage2, m_Gripper, m_driveTrain);
   private final AutoLevel m_AutoLevel = new AutoLevel(0, m_driveTrain);
@@ -78,9 +81,7 @@ public class RobotContainer {
   private final TestElevator2 m_TestElevator2 = new TestElevator2(m_ArmStage2, "Score_ML");
  ****************************************************************************************** */
 // LimeLight 
-// The limelight is used a couple times here, the declaration is separated from the other subsystems
-// because it is extra special
- // private final LimeLight m_limeLight = new LimeLight();
+ private final LimeLight m_limeLight = new LimeLight();
 
   public RobotContainer() {
     //Driving the robot with right stick
@@ -102,6 +103,8 @@ public class RobotContainer {
     m_actuatorController.leftTrigger().onTrue(m_MoveToLoadingStation);
     m_actuatorController.povUp().onTrue(m_ElevatorUp);
     m_actuatorController.povDown().onTrue(m_ElevatorDown);
+    m_actuatorController.povLeft().onTrue(m_Stage2MoveUp);
+    m_actuatorController.povRight().onTrue(m_Stage2MoveDown);
 
     //Gripper open/close
     m_driverController.rightTrigger().onTrue(m_OpenGripper);
@@ -109,17 +112,19 @@ public class RobotContainer {
     //Set brakes
     m_driverController.leftBumper().onTrue(m_SetBrakes);
     m_driverController.rightBumper().onTrue(m_CoastMode);
-     
     //Request game pieces to human player by changing led lights
     m_actuatorController.rightBumper().onTrue(m_ConeRequestLedLights);
     m_actuatorController.leftBumper().onTrue(m_CubeRequestLedLights);
-
+    //Auto select
     SmartDashboard.putData("AutoSelection",m_autoChooser);
   }
   
   public Command getAutonomousCommand() {
    return m_autoChooser.getSelected();
-   //return null;
+  }
+
+  public LimeLight getLimeLight() {
+    return m_limeLight;
   }
 
 }

@@ -151,12 +151,12 @@ public class Elevator extends SubsystemBase {
 	moveSetpoint = currentSetPoint - 1024;
 	this.MoveToPosition(moveSetpoint);
   }
+  
   //Motor control mode motion magic to set point
   private void MoveToPosition(double targetPos) {
 	m_ElevatorMotor.set(TalonFXControlMode.MotionMagic, targetPos);
 	currentSetPoint = targetPos;
   }
-
 
 	/**
     * Retrieve numbers from the preferences table. If the specified key is in

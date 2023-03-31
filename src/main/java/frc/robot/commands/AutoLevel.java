@@ -8,15 +8,11 @@ import frc.robot.subsystems.DriveTrain;
 public class AutoLevel extends CommandBase {
     private final DriveTrain m_drive;
     private double m_deg;
-
     private double m_xSpeed;
-
     private Pose2d m_startPose;
-    
     private long m_lastTime;
     private double m_lastPitch;
     private double m_lastVel = 0;
-
     private boolean m_end = false;
 
     private enum SignChange {

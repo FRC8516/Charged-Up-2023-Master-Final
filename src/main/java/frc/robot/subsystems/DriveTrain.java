@@ -85,13 +85,6 @@ public class DriveTrain extends SubsystemBase {
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
     m_robotDrive.arcadeDrive(-xSpeed, -ySpeed,true);
-   /* 
-    if (Math.abs(xSpeed) < 0.02 && (Math.abs(ySpeed) < 0.02)) {
-      m_robotDrive.stopMotor();
-    }
-    else {
-        m_robotDrive.curvatureDrive(-xSpeed, -ySpeed, true);
-    } */
   }
 
   public void SetBrakes () {
@@ -109,8 +102,6 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void autoDrive(double speed) {
-    
-
     m_frontLeftMotor.set(ControlMode.PercentOutput, -speed);
     m_frontRightMotor.set(ControlMode.PercentOutput, speed);
   }
