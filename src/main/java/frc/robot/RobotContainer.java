@@ -16,6 +16,7 @@ import frc.robot.commands.AutoBalence;
 import frc.robot.commands.AutoLevel;
 import frc.robot.commands.ChangeLedLights;
 import frc.robot.commands.CloseGripper;
+import frc.robot.commands.Drive_With_Limelight;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.MoveToDefault;
@@ -33,10 +34,9 @@ import frc.robot.subsystems.ArmStage1;
 import frc.robot.subsystems.ArmStage2;
 import frc.robot.subsystems.CandleControl;
 import frc.robot.subsystems.DriveTrain;
-//import oi.limelightvision.limelight.frc.LimeLight;
+import oi.limelightvision.limelight.frc.LimeLight;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Gripper;
-import oi.limelightvision.limelight.frc.LimeLight;
 
 public class RobotContainer {
  
@@ -73,6 +73,10 @@ public class RobotContainer {
   private final SetBrakeMode m_SetBrakes = new SetBrakeMode();
   //Set Coast drive train
   private final SetCoastMode m_CoastMode = new SetCoastMode();
+  // LimeLight 
+   private final LimeLight m_limeLight = new LimeLight();
+  //Drive with limeLight
+  private final Drive_With_Limelight m_Drive_With_Limelight = new Drive_With_Limelight(m_actuatorController, m_limeLight, m_driveTrain);
   //Autonomous
   private final Auto1 m_auto1 = new Auto1(m_Elevator, m_ArmStage1, m_ArmStage2, m_Gripper, m_driveTrain);
   private final AutoLevel m_AutoLevel = new AutoLevel(0, m_driveTrain);
@@ -82,8 +86,6 @@ public class RobotContainer {
   private final TestElevator m_TestElevator = new TestElevator(m_ArmStage2, "Score_LL");
   private final TestElevator2 m_TestElevator2 = new TestElevator2(m_ArmStage2, "Score_ML");
  ****************************************************************************************** */
-// LimeLight 
- private final LimeLight m_limeLight = new LimeLight();
 
   public RobotContainer() {
     //Driving the robot with right stick
@@ -108,6 +110,8 @@ public class RobotContainer {
     m_actuatorController.povRight().onTrue(m_Stage2MoveUp);
     m_actuatorController.povLeft().onTrue(m_Stage2MoveDown);
 
+    //Drive with Limelight Stearing
+    m_driverController.a().whileTrue(m_Drive_With_Limelight);
     //Gripper open/close
     m_driverController.rightTrigger().onTrue(m_OpenGripper);
     m_driverController.leftTrigger().onTrue(m_CloseGripper);
