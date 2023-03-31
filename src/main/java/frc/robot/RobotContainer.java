@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.LedLights;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Auto1;
+import frc.robot.commands.AutoBalence;
 import frc.robot.commands.AutoLevel;
 import frc.robot.commands.ChangeLedLights;
 import frc.robot.commands.CloseGripper;
@@ -75,6 +76,7 @@ public class RobotContainer {
   //Autonomous
   private final Auto1 m_auto1 = new Auto1(m_Elevator, m_ArmStage1, m_ArmStage2, m_Gripper, m_driveTrain);
   private final AutoLevel m_AutoLevel = new AutoLevel(0, m_driveTrain);
+  private final AutoBalence m_autoBalence = new AutoBalence(m_Elevator, m_ArmStage1, m_ArmStage2, m_Gripper, m_driveTrain);
  /******************************************************************************************
   ONLY used for testing!  Not to used for competition!
   private final TestElevator m_TestElevator = new TestElevator(m_ArmStage2, "Score_LL");
@@ -88,7 +90,7 @@ public class RobotContainer {
     m_driveTrain.setDefaultCommand(new RunCommand(
       () -> m_driveTrain.drive(m_driverController.getRightY(), m_driverController.getRightX()),m_driveTrain));
     //Auto selection
-     m_autoChooser.addOption("AutoLevel", m_AutoLevel);
+     m_autoChooser.addOption("AutoBalence", m_autoBalence);
      m_autoChooser.setDefaultOption("Auto 1", m_auto1);
       configureBindings();
   }
@@ -103,8 +105,8 @@ public class RobotContainer {
     m_actuatorController.leftTrigger().onTrue(m_MoveToLoadingStation);
     m_actuatorController.povUp().onTrue(m_ElevatorUp);
     m_actuatorController.povDown().onTrue(m_ElevatorDown);
-    m_actuatorController.povLeft().onTrue(m_Stage2MoveUp);
-    m_actuatorController.povRight().onTrue(m_Stage2MoveDown);
+    m_actuatorController.povRight().onTrue(m_Stage2MoveUp);
+    m_actuatorController.povLeft().onTrue(m_Stage2MoveDown);
 
     //Gripper open/close
     m_driverController.rightTrigger().onTrue(m_OpenGripper);

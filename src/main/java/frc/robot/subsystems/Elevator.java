@@ -143,12 +143,12 @@ public class Elevator extends SubsystemBase {
   }
 
   public void ElevatorUp(){
-    moveSetpoint = currentSetPoint + 1024;
+    moveSetpoint = currentSetPoint + 2048;
 	this.MoveToPosition(moveSetpoint);
   }
 
   public void ElevatorDown(){
-	moveSetpoint = currentSetPoint - 1024;
+	moveSetpoint = currentSetPoint - 2048;
 	this.MoveToPosition(moveSetpoint);
   }
   

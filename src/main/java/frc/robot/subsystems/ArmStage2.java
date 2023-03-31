@@ -150,7 +150,8 @@ public class ArmStage2 extends SubsystemBase {
 
   private void MoveToPosition(double targetPos) {
 	m_ArmStageMotor2.set(TalonFXControlMode.MotionMagic, targetPos, DemandType.ArbitraryFeedForward, feedforward);
-  }
+	currentSetPoint = targetPos;
+}
 
 	/**
     * Retrieve numbers from the preferences table. If the specified key is in
