@@ -44,12 +44,15 @@ public class AutoLevel extends CommandBase {
     @Override
     public void execute() {
         if (Math.abs(m_drive.getRobotPitch().getDegrees() - 2) > 15 && !m_onStation) {
+            System.out.println("on station");
             m_onStation = true;
         }
-        if (Math.abs(m_drive.getRobotPitch().getDegrees() - 2) < 9 && m_onStation) {
+        if (Math.abs(m_drive.getRobotPitch().getDegrees() - 2) < 14 && m_onStation) {
+            System.out.println("end");
             end(false);
         } else if (m_onStation) {
             m_drive.drive(m_xSpeed, 0);
+            System.out.println(m_drive.getRobotPitch().getDegrees());
         } else {
             m_drive.drive(m_xSpeed * 2, 0);
         }
