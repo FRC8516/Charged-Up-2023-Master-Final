@@ -27,7 +27,7 @@ public class AutoBalence extends SequentialCommandGroup {
      // new MoveToPosition(m_driveTrain, -0.20).withTimeout(0.75),
       new MoveToDefault(m_Elevator, m_ArmStage1, m_ArmStage2).withTimeout(2),
       new SetBrakeMode(),
-      new AutoLevel(0.4, m_driveTrain)
+      new AutoLevel(0.5, m_driveTrain)
     );
   }
 }

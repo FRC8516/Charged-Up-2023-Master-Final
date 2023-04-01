@@ -76,7 +76,8 @@ public class RobotContainer {
   // LimeLight 
    private final LimeLight m_limeLight = new LimeLight();
   //Drive with limeLight
-  private final Drive_With_Limelight m_Drive_With_Limelight = new Drive_With_Limelight(m_actuatorController, m_limeLight, m_driveTrain);
+  private final Drive_With_Limelight m_Drive_With_Limelight = new Drive_With_Limelight(m_driverController, 
+          m_limeLight, m_driveTrain);
   //Autonomous
   private final Auto1 m_auto1 = new Auto1(m_Elevator, m_ArmStage1, m_ArmStage2, m_Gripper, m_driveTrain);
   private final AutoLevel m_AutoLevel = new AutoLevel(0, m_driveTrain);
@@ -111,7 +112,7 @@ public class RobotContainer {
     m_actuatorController.povLeft().onTrue(m_Stage2MoveDown);
 
     //Drive with Limelight Stearing
-    m_driverController.a().whileTrue(m_Drive_With_Limelight);
+    m_driverController.povUp().whileTrue(m_Drive_With_Limelight);
     //Gripper open/close
     m_driverController.rightTrigger().onTrue(m_OpenGripper);
     m_driverController.leftTrigger().onTrue(m_CloseGripper);

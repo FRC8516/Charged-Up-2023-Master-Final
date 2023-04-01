@@ -26,7 +26,7 @@ public class Auto1 extends SequentialCommandGroup {
       new OpenGripper(m_Gripper).withTimeout(1.5),
       new MoveToPosition(m_driveTrain, -0.20).withTimeout(0.75),
       new MoveToDefault(m_Elevator, m_ArmStage1, m_ArmStage2).withTimeout(2),
-      new MoveToPosition(m_driveTrain, -0.5).withTimeout(0.8)
+      new MoveToPosition(m_driveTrain, -0.5).withTimeout(0.9)
     );
   }
 }

@@ -47,7 +47,7 @@ public class AutoLevel extends CommandBase {
             System.out.println("on station");
             m_onStation = true;
         }
-        if (Math.abs(m_drive.getRobotPitch().getDegrees() - 2) < 16 && m_onStation) {
+        if (Math.abs(m_drive.getRobotPitch().getDegrees() - 2) < 14 && m_onStation) {
             System.out.println("end");
             end(false);
         } else if (m_onStation) {
