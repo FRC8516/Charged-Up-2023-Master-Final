@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +32,11 @@ public class DriveTrain extends SubsystemBase {
   private double m_dYawCurrent;
  // private double m_dYawStart;
   private double m_dYawTarget;
+  public boolean m_SlowMode;
+  private double m_Yspeed;
+  private double m_Xspeed;
+  // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per second
+  SlewRateLimiter filter = new SlewRateLimiter(0.5);
 
   public DriveTrain() {
     
@@ -84,7 +90,22 @@ public class DriveTrain extends SubsystemBase {
     // Drive with arcade drive.
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
-    m_robotDrive.arcadeDrive(-xSpeed, -ySpeed,true);
+     if (m_SlowMode == true) {
+        if (ySpeed > 0.03) {
+          m_Yspeed = 0.09;
+        }
+        if (xSpeed > 0.03) {
+          m_Xspeed = 0.09;
+        }
+      // m_Yspeed = ySpeed * 0.8;
+      //m_Xspeed = xSpeed * 0.7;
+      m_robotDrive.arcadeDrive(-m_Xspeed, -m_Yspeed,true);
+     }
+     else 
+     {
+        // Slew-rate limits the forward/backward input, limiting forward/backward acceleration filter.calculate(-xSpeed)
+        m_robotDrive.arcadeDrive(-xSpeed, -ySpeed,true);
+    }
   }
 
   public void SetBrakes () {

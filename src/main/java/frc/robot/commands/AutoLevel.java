@@ -51,16 +51,16 @@ public class AutoLevel extends CommandBase {
             System.out.println("end");
             end(false);
         } else if (m_onStation) {
-            m_drive.drive(m_xSpeed, 0);
+          //  m_drive.drive(m_xSpeed, 0);
             System.out.println(m_drive.getRobotPitch().getDegrees());
         } else {
-            m_drive.drive(m_xSpeed * 2, 0);
+           // m_drive.drive(m_xSpeed * 2, 0);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_drive.drive(0, 0);
+       // m_drive.drive(0, 0);
         m_end = true;
     }
 
