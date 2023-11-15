@@ -25,6 +25,9 @@ public final class Constants {
         public static final int kRearRightChannel = 4;
         //pigeon IMU
         public static final int kPigeon = 1;
+        public static final double maxUnitsPerSecond = 2; // Slew Rate
+        public static final double maxSpeed = 1;
+        public static final double maxTurning = 0.8;    
     }
 
     public static final class ManipulatorConstants {

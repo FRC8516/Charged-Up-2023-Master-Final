@@ -36,8 +36,8 @@ public class DriveTrain extends SubsystemBase {
   private double m_Yspeed;
   private double m_Xspeed;
   // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per second
-  SlewRateLimiter filter = new SlewRateLimiter(0.5);
-
+  SlewRateLimiter m_rateLimiter = new SlewRateLimiter(DriveConstants.maxUnitsPerSecond);
+ // m_rateLimiter = new SlewRateLimiter(); 
   public DriveTrain() {
     
     // Invert the right side motors.
@@ -72,7 +72,8 @@ public class DriveTrain extends SubsystemBase {
     m_frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, EncoderConstants.kPIDLoopIdx, EncoderConstants.kTimeoutMs);
     m_frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, EncoderConstants.kPIDLoopIdx, EncoderConstants.kTimeoutMs);
     //reset IMU
-    m_pigeon.reset();  
+    m_pigeon.reset(); 
+    
   }
 
   @Override
@@ -90,23 +91,14 @@ public class DriveTrain extends SubsystemBase {
     // Drive with arcade drive.
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
-     if (m_SlowMode == true) {
-        if (ySpeed > 0.03) {
-          m_Yspeed = 0.09;
-        }
-        if (xSpeed > 0.03) {
-          m_Xspeed = 0.09;
-        }
+      double maxSpeed = DriveConstants.maxSpeed;
+      double maxTurning = DriveConstants.maxTurning;
       // m_Yspeed = ySpeed * 0.8;
       //m_Xspeed = xSpeed * 0.7;
-      m_robotDrive.arcadeDrive(-m_Xspeed, -m_Yspeed,true);
-     }
-     else 
-     {
-        // Slew-rate limits the forward/backward input, limiting forward/backward acceleration filter.calculate(-xSpeed)
-        m_robotDrive.arcadeDrive(-xSpeed, -ySpeed,true);
+      //m_robotDrive.arcadeDrive(-m_Xspeed, -m_Yspeed,true);
+      m_robotDrive.arcadeDrive(m_rateLimiter.calculate(-xSpeed * maxSpeed), -ySpeed * maxTurning);
+       // .arcadeDrive(-xSpeed, -ySpeed,true);
     }
-  }
 
   public void SetBrakes () {
     m_frontLeftMotor.setNeutralMode(NeutralMode.Brake);
