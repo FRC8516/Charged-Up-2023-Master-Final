@@ -16,6 +16,7 @@ import frc.robot.commands.AutoBalence;
 import frc.robot.commands.AutoLevel;
 import frc.robot.commands.ChangeLedLights;
 import frc.robot.commands.CloseGripper;
+import frc.robot.commands.CreepMode;
 import frc.robot.commands.Drive_With_Limelight;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.ElevatorDown;
@@ -73,6 +74,8 @@ public class RobotContainer {
   private final SetBrakeMode m_SetBrakes = new SetBrakeMode();
   //Set Coast drive train
   private final SetCoastMode m_CoastMode = new SetCoastMode();
+  //Set drive into creep mode
+  private final CreepMode m_CreepMode = new CreepMode();
   // LimeLight 
    private final LimeLight m_limeLight = new LimeLight();
   //Drive with limeLight
@@ -89,7 +92,7 @@ public class RobotContainer {
  ****************************************************************************************** */
 
   public RobotContainer() {
-    //Driving the robot with right stick
+    //Driving the robot with right stick leftBumper().onTrue
     m_driveTrain.setDefaultCommand(new RunCommand(
       () -> m_driveTrain.drive(m_driverController.getRightY(), m_driverController.getRightX()),m_driveTrain));
     //Auto selection
@@ -116,9 +119,14 @@ public class RobotContainer {
     //Gripper open/close
     m_driverController.rightTrigger().onTrue(m_OpenGripper);
     m_driverController.leftTrigger().onTrue(m_CloseGripper);
+    //Creep Mode
+    m_driverController.leftBumper().onTrue(m_CreepMode);
     //Set brakes
-    m_driverController.leftBumper().onTrue(m_SetBrakes);
-    m_driverController.rightBumper().onTrue(m_CoastMode);
+    //m_driverController.leftBumper().onTrue(m_SetBrakes);
+    //m_driverController.rightBumper().onTrue(m_CoastMode);
+    m_driverController.x().onTrue(m_SetBrakes);
+    m_driverController.a().onTrue(m_CoastMode);
+
     //Request game pieces to human player by changing led lights
     m_actuatorController.rightBumper().onTrue(m_ConeRequestLedLights);
     m_actuatorController.leftBumper().onTrue(m_CubeRequestLedLights);

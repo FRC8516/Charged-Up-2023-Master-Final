@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,7 +32,12 @@ public class DriveTrain extends SubsystemBase {
   private double m_dYawCurrent;
  // private double m_dYawStart;
   private double m_dYawTarget;
-
+  public boolean m_SlowMode;
+  private double m_Yspeed;
+  private double m_Xspeed;
+  // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per second
+  SlewRateLimiter m_rateLimiter = new SlewRateLimiter(DriveConstants.maxUnitsPerSecond);
+ // m_rateLimiter = new SlewRateLimiter(); 
   public DriveTrain() {
     
     // Invert the right side motors.
@@ -66,7 +72,8 @@ public class DriveTrain extends SubsystemBase {
     m_frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, EncoderConstants.kPIDLoopIdx, EncoderConstants.kTimeoutMs);
     m_frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, EncoderConstants.kPIDLoopIdx, EncoderConstants.kTimeoutMs);
     //reset IMU
-    m_pigeon.reset();  
+    m_pigeon.reset(); 
+    
   }
 
   @Override
@@ -84,8 +91,14 @@ public class DriveTrain extends SubsystemBase {
     // Drive with arcade drive.
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
-    m_robotDrive.arcadeDrive(-xSpeed, -ySpeed,true);
-  }
+      double maxSpeed = DriveConstants.maxSpeed;
+      double maxTurning = DriveConstants.maxTurning;
+      // m_Yspeed = ySpeed * 0.8;
+      //m_Xspeed = xSpeed * 0.7;
+      //m_robotDrive.arcadeDrive(-m_Xspeed, -m_Yspeed,true);
+      m_robotDrive.arcadeDrive(m_rateLimiter.calculate(-xSpeed * maxSpeed), -ySpeed * maxTurning);
+       // .arcadeDrive(-xSpeed, -ySpeed,true);
+    }
 
   public void SetBrakes () {
     m_frontLeftMotor.setNeutralMode(NeutralMode.Brake);
